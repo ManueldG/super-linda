@@ -10,7 +10,7 @@ kaboom({
 
 // Speed identifiers
 const MOVE_SPEED = 120
-const JUMP_FORCE = 400
+const JUMP_FORCE = 390
 const BIG_JUMP_FORCE = 600
 let CURRENT_JUMP_FORCE = JUMP_FORCE
 const FALL_DEATH = 400
@@ -19,7 +19,7 @@ const ENEMY_SPEED = 20
 // Game logic
 
 let isJumping = true
-loadSprite('mario', 'LindaPX3.png')
+loadSprite('Linda', 'LindaPX3.png')
 loadSprite('evil-shroom', 'annamini.png')
 loadSprite('blue-evil-shroom', 'saramini.png')
 loadRoot('https://i.imgur.com/')
@@ -51,16 +51,16 @@ scene("game", ({ level, score }) => {
 
   const maps = [
     [
-      '                                      ',
-      '                                      ',
-      '                                      ',
-      '                                      ',
-      '                                      ',
-      '     %   =*=%=                        ',
-      '                                      ',
-      '                            -+        ',
-      '                    ^   ^   ()        ',
-      '==============================   =====',
+      '                                                                                 ',
+      '                                                                                 ',
+      '                                                                                 ',
+      '                                                                                 ',
+      '                                                                                 ',
+      '     %   =*=%=                  *******                                          ',
+      '                                                     ======     ======                             ',
+      '                                                   =                   =                      -+     ',
+      '                    ^   ^                         =                     =                     ()      ',
+      '==================================================                       ==========================',
     ],
     [
       '£                                                    £',
@@ -81,9 +81,9 @@ scene("game", ({ level, score }) => {
       '                                                                                           ',
       '                                                                                           ',
       '     %   =*=%=                                                                             ',
-      '                                                                                           ',
+      '                                                                        ==                 ',
       '                                                                    ======            -+   ',
-      '                    ^   ^                  ^                ^       =     =           ()   ',
+      '                    ^   ^         x        ^         z      ^      =     =            ()   ',
       '===========================================================================================',
     ],
   ]
@@ -100,11 +100,11 @@ scene("game", ({ level, score }) => {
     ')': [sprite('pipe-bottom-right'), solid(), scale(0.5)],
     '-': [sprite('pipe-top-left'), solid(), scale(0.5), 'pipe'],
     '+': [sprite('pipe-top-right'), solid(), scale(0.5), 'pipe'],
-    '^': [sprite('evil-shroom'), solid(), 'dangerous'],
+    '^': [sprite('evil-shroom'), solid(),scale(0.8), 'dangerous'],
     '#': [sprite('mushroom'), solid(), 'mushroom', body()],
     '!': [sprite('blue-block'), solid(), scale(0.5)],
     '£': [sprite('blue-brick'), solid(), scale(0.5)],
-    'z': [sprite('blue-evil-shroom'), solid(), scale(0.5), 'dangerous'],
+    'z': [sprite('blue-evil-shroom'), solid(), scale(0.8), 'dangerous'],
     '@': [sprite('blue-surprise'), solid(), scale(0.5), 'coin-surprise'],
     'x': [sprite('blue-steel'), solid(), scale(0.5)],
 
@@ -135,6 +135,9 @@ scene("game", ({ level, score }) => {
             this.smallify()
           }
         }
+        else{
+          CURRENT_JUMP_FORCE = JUMP_FORCE
+        }
       },
       isBig() {
         return isBig
@@ -154,7 +157,7 @@ scene("game", ({ level, score }) => {
   }
 
   const player = add([
-    sprite('mario'), solid(),
+    sprite('Linda'), solid(),
     pos(30, 0),
     body(),
     big(),
@@ -171,6 +174,7 @@ scene("game", ({ level, score }) => {
       destroy(obj)
       gameLevel.spawn('}', obj.gridPos.sub(0,0))
     }
+
     if (obj.is('mushroom-surprise')) {
       gameLevel.spawn('#', obj.gridPos.sub(0, 1))
       destroy(obj)
@@ -180,7 +184,7 @@ scene("game", ({ level, score }) => {
 
   player.collides('mushroom', (m) => {
     destroy(m)
-    player.biggify(6)
+    player.biggify(120)
   })
 
   player.collides('coin', (c) => {
@@ -222,7 +226,9 @@ scene("game", ({ level, score }) => {
   })
 
   keyDown('right', () => {
-    player.move(MOVE_SPEED, 0)
+    player.move(MOVE_SPEED, 0);
+    
+    
   })
 
   player.action(() => {
@@ -240,7 +246,7 @@ scene("game", ({ level, score }) => {
 })
 
 scene('lose', ({ score }) => {
-  add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
+  add([text(score,32), origin('center'), pos(width()/2, height()/ 2)])
 })
 
 start("game", { level: 0, score: 0})
